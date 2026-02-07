@@ -3,103 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daskart - Shop Like a Pro</title>
+    <title>Daskart - Premium Shopping</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .product-card:hover { transform: translateY(-5px); transition: 0.3s; }
+        .hidden-section { display: none; }
+    </style>
 </head>
-<body class="bg-gray-50 min-h-screen pb-20">
-    <header class="flex items-center justify-between p-4 border-b sticky top-0 bg-white z-50 shadow-sm">
-        <div class="flex items-center gap-4">
-            <h1 class="text-2xl font-bold tracking-tighter text-orange-600">DASKART</h1>
-        </div>
-        <div class="flex items-center gap-5 text-gray-700">
-            <div class="relative cursor-pointer" onclick="showCart()">
-                <i class="fas fa-shopping-cart text-xl"></i>
-                <span id="cart-count" class="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold">0</span>
+<body class="bg-gray-50 font-sans">
+
+    <header class="bg-white sticky top-0 z-50 shadow-sm">
+        <div class="p-4 flex items-center justify-between container mx-auto">
+            <h1 class="text-2xl font-black text-orange-600 tracking-tighter cursor-pointer" onclick="showSection('home')">DASKART</h1>
+            <div class="flex-1 mx-4 relative">
+                <input type="text" id="searchInput" onkeyup="searchProduct()" placeholder="Search clothes, shoes..." class="w-full bg-gray-100 border-none rounded-full py-2 px-10 focus:ring-2 focus:ring-orange-500">
+                <i class="fas fa-search absolute left-4 top-3 text-gray-400"></i>
+            </div>
+            <div class="flex items-center gap-4 text-gray-600">
+                <i class="fas fa-user text-xl cursor-pointer" onclick="loginAlert()"></i>
+                <div class="relative cursor-pointer" onclick="showCart()">
+                    <i class="fas fa-shopping-bag text-xl"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-orange-600 text-white text-[10px] h-4 w-4 rounded-full flex items-center justify-center">0</span>
+                </div>
             </div>
         </div>
+        <nav class="flex justify-center gap-6 pb-2 text-sm font-medium border-b">
+            <span class="cursor-pointer hover:text-orange-600" onclick="showSection('home')">Home</span>
+            <span class="cursor-pointer hover:text-orange-600" onclick="showSection('about')">About Us</span>
+            <span class="cursor-pointer hover:text-orange-600">Categories</span>
+        </nav>
     </header>
 
-    <main class="p-4 grid grid-cols-2 gap-4">
-        <div class="bg-white p-3 rounded-xl shadow-sm border">
-            <div class="aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500" alt="Shirt" class="object-cover h-full w-full">
-            </div>
-            <h4 class="font-medium text-sm">Premium Oversize Tee</h4>
-            <p class="text-gray-900 font-bold mt-1">₹1,299</p>
-            <button onclick="addToCart('Premium Oversize Tee', 1299)" class="w-full mt-2 bg-orange-500 text-white py-2 rounded-lg text-xs font-bold active:scale-95 transition">Add to Cart</button>
-        </div>
+    <main id="main-content" class="container mx-auto p-4">
+        
+        <section id="home-section">
+            <h2 class="text-xl font-bold mb-4 mt-2">New Arrivals</h2>
+            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-3 rounded-2xl shadow-sm border product-card" data-name="Men Orange Shirt">
+                    <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=400" class="rounded-xl mb-2">
+                    <div class="flex text-yellow-400 text-[10px] mb-1">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        <span class="text-gray-400 ml-1">(4.5)</span>
+                    </div>
+                    <h4 class="text-sm font-semibold">Men Terracota Orange Shirt</h4>
+                    <p class="text-orange-600 font-bold">₹1,899 <span class="text-gray-400 line-through text-xs font-normal">₹3,299</span></p>
+                    <button onclick="addToCart('Orange Shirt', 1899)" class="w-full bg-black text-white py-2 rounded-lg mt-2 text-xs font-bold">Add to Cart</button>
+                </div>
 
-        <div class="bg-white p-3 rounded-xl shadow-sm border">
-            <div class="aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1598033129183-c4f50c717658?w=500" alt="Shirt" class="object-cover h-full w-full">
+                <div class="bg-white p-3 rounded-2xl shadow-sm border product-card" data-name="Soft Black Shirt">
+                    <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=400" class="rounded-xl mb-2">
+                    <div class="flex text-yellow-400 text-[10px] mb-1">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star text-gray-200"></i>
+                        <span class="text-gray-400 ml-1">(4.0)</span>
+                    </div>
+                    <h4 class="text-sm font-semibold">Shirt With Soft Fabric</h4>
+                    <p class="text-orange-600 font-bold">₹1,399 <span class="text-gray-400 line-through text-xs font-normal">₹2,299</span></p>
+                    <button onclick="addToCart('Soft Fabric Shirt', 1399)" class="w-full bg-black text-white py-2 rounded-lg mt-2 text-xs font-bold">Add to Cart</button>
+                </div>
             </div>
-            <h4 class="font-medium text-sm">Classic White Shirt</h4>
-            <p class="text-gray-900 font-bold mt-1">₹999</p>
-            <button onclick="addToCart('Classic White Shirt', 999)" class="w-full mt-2 bg-orange-500 text-white py-2 rounded-lg text-xs font-bold active:scale-95 transition">Add to Cart</button>
-        </div>
+        </section>
+
+        <section id="about-section" class="hidden-section bg-white p-8 rounded-2xl shadow-sm">
+            <h2 class="text-3xl font-bold mb-4 text-orange-600">About DASKART</h2>
+            <p class="text-gray-600 leading-relaxed mb-4">Welcome to <strong>Daskart</strong>, your destination for premium quality fashion. We believe in "Quality meets Comfort". Our mission is to provide luxury fabrics at affordable prices for everyone.</p>
+            <h3 class="font-bold text-lg mb-2">Why Choose Us?</h3>
+            <ul class="list-disc ml-5 text-gray-500 space-y-2">
+                <li>Real People, Real Reviews</li>
+                <li>Premium Cotton Fabrics</li>
+                <li>Fast Delivery & Easy Returns</li>
+            </ul>
+        </section>
     </main>
 
-    <div class="fixed bottom-5 left-0 right-0 px-4">
-        <button onclick="placeOrder()" class="w-full bg-black text-white py-4 rounded-2xl font-bold shadow-2xl flex justify-between px-8 items-center">
-            <span>Place Order Now</span>
-            <i class="fas fa-arrow-right"></i>
-        </button>
+    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t flex gap-4">
+        <button onclick="placeOrder()" class="flex-1 bg-orange-600 text-white py-3 rounded-xl font-bold text-lg shadow-lg active:scale-95 transition">PLACE ORDER</button>
     </div>
 
     <script>
-        let cart = [];
-        let count = 0;
+        let cartCount = 0;
+
+        function showSection(sectionId) {
+            document.getElementById('home-section').classList.add('hidden-section');
+            document.getElementById('about-section').classList.add('hidden-section');
+            document.getElementById(sectionId + '-section').classList.remove('hidden-section');
+        }
 
         function addToCart(name, price) {
-            cart.push({name, price});
-            count++;
-            document.getElementById('cart-count').innerText = count;
-            
-            // Chhota sa alert
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 1500
-            });
-            Toast.fire({
-                icon: 'success',
-                title: name + ' added to cart'
-            });
+            cartCount++;
+            document.getElementById('cart-count').innerText = cartCount;
+            Swal.fire({ icon: 'success', title: 'Added!', text: name + ' is in your cart.', showConfirmButton: false, timer: 1000 });
+        }
+
+        function searchProduct() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('product-card');
+            for (let card of cards) {
+                let name = card.getAttribute('data-name').toLowerCase();
+                card.style.display = name.includes(input) ? "block" : "none";
+            }
+        }
+
+        function loginAlert() {
+            Swal.fire({ title: 'Account', text: 'Login system coming soon with Database!', icon: 'info' });
         }
 
         async function placeOrder() {
-            if(count === 0) {
-                Swal.fire('Empty Cart', 'Pehle kuch select toh karo bhai!', 'warning');
-                return;
-            }
-
+            if(cartCount === 0) return Swal.fire('Wait!', 'Aapka cart khali hai bhai.', 'warning');
+            
             const { value: formValues } = await Swal.fire({
-                title: 'Enter Delivery Details',
-                html:
-                    '<input id="swal-input1" class="swal2-input" placeholder="Full Name">' +
-                    '<input id="swal-input2" class="swal2-input" placeholder="Full Address">',
-                focusConfirm: false,
-                preConfirm: () => {
-                    return [
-                        document.getElementById('swal-input1').value,
-                        document.getElementById('swal-input2').value
-                    ]
-                }
-            })
+                title: 'Order Details',
+                html: '<input id="name" class="swal2-input" placeholder="Full Name"><input id="addr" class="swal2-input" placeholder="Address"><input id="phone" class="swal2-input" placeholder="Mobile Number">',
+                preConfirm: () => [document.getElementById('name').value, document.getElementById('addr').value, document.getElementById('phone').value]
+            });
 
-            if (formValues && formValues[0] && formValues[1]) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Order Placed!',
-                    text: 'Thank you ' + formValues[0] + '! Your order for ' + count + ' items is on the way.',
-                    confirmButtonColor: '#f97316'
-                });
-                // Cart reset
-                cart = [];
-                count = 0;
+            if (formValues && formValues[0]) {
+                Swal.fire('Order Success!', `Thank you ${formValues[0]}, your order for ${cartCount} items is received!`, 'success');
+                cartCount = 0;
                 document.getElementById('cart-count').innerText = '0';
             }
         }
