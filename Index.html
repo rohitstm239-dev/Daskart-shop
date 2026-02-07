@@ -1,170 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazon.in: Daskart - Online Shopping</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        .amazon-yellow-btn { background-color: #ffd814; border-color: #fcd200; border-radius: 8px; box-shadow: 0 2px 5px 0 rgba(213,217,217,.5); }
-        .amazon-yellow-btn:hover { background-color: #f7ca00; }
-        .amazon-orange-btn { background-color: #ffa41c; border-color: #ff8f00; border-radius: 8px; }
-        .nav-belt { background-color: #131921; }
-    </style>
+<meta charset="UTF-8">
+<title>Daskart Shop</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<style>
+body{
+  font-family: Arial;
+  margin:0;
+  background:#f5f5f5;
+}
+
+header{
+  background:#131921;
+  color:white;
+  padding:15px;
+  font-size:22px;
+}
+
+#products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  padding:20px;
+}
+
+.card{
+  background:white;
+  padding:15px;
+  border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+  text-align:center;
+}
+
+button{
+  background:#ff9900;
+  border:none;
+  padding:8px 12px;
+  cursor:pointer;
+  border-radius:4px;
+}
+
+#cart{
+  background:white;
+  margin:20px;
+  padding:15px;
+  border-radius:8px;
+}
+</style>
 </head>
-<body class="bg-gray-100 font-sans pb-32">
 
-    <header class="nav-belt text-white sticky top-0 z-50">
-        <div class="container mx-auto flex items-center p-2 gap-4">
-            <div class="px-2 border border-transparent hover:border-white cursor-pointer" onclick="location.reload()">
-                <h1 class="text-2xl font-bold">DASKART<span class="text-orange-400 text-sm">.in</span></h1>
-            </div>
+<body>
 
-            <div class="flex-1 flex h-10">
-                <select class="bg-gray-200 text-gray-700 text-xs px-2 rounded-l-md border-r outline-none hidden md:block">
-                    <option>All Categories</option>
-                    <option>Fashion</option>
-                    <option>Shoes</option>
-                </select>
-                <input type="text" id="searchInput" onkeyup="realTimeSearch()" placeholder="Search Amazon.in" class="flex-1 px-3 text-black outline-none">
-                <button class="bg-orange-400 px-5 rounded-r-md text-slate-900 hover:bg-orange-500">
-                    <i class="fas fa-search text-xl"></i>
-                </button>
-            </div>
+<header>Daskart 🛒</header>
 
-            <div class="flex items-center gap-4 px-2 cursor-pointer relative" onclick="openCartTab()">
-                <div class="text-white">
-                    <span id="cart-count" class="absolute top-0 right-3 bg-orange-600 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
-                    <i class="fas fa-shopping-cart text-3xl"></i>
-                </div>
-                <span class="font-bold mt-3 hidden sm:block">Cart</span>
-            </div>
-        </div>
-    </header>
+<div id="products"></div>
 
-    <main class="container mx-auto p-4">
-        <div class="bg-blue-50 text-xs p-2 mb-4 border border-blue-200 rounded">
-            <i class="fas fa-map-marker-alt text-gray-600"></i> Deliver to India - <span class="text-blue-700 font-bold">Free Delivery on your first order</span>
-        </div>
+<div id="cart">
+<h3>Cart</h3>
+<ul id="cartItems"></ul>
+<h3>Total: ₹<span id="total">0</span></h3>
+</div>
 
-        <div id="product-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            <div class="bg-white p-4 rounded shadow-sm border product-item" data-title="men shirt orange">
-                <div class="h-64 flex items-center justify-center overflow-hidden mb-3">
-                    <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500" class="max-h-full hover:scale-105 transition duration-300">
-                </div>
-                <h3 class="text-sm font-medium leading-5 h-10 overflow-hidden mb-1">Daskart Men's Premium Slim Fit Cotton Shirt - Terracota Orange</h3>
-                <div class="flex items-center gap-1 text-orange-500 text-xs mb-2">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                    <span class="text-blue-600 ml-1">4,210 ratings</span>
-                </div>
-                <div class="flex items-baseline gap-1">
-                    <span class="text-xs">₹</span><span class="text-2xl font-bold">1,499</span>
-                    <span class="text-xs text-gray-500 line-through">M.R.P: ₹2,999</span>
-                </div>
-                <p class="text-xs text-green-700 font-bold mb-3 italic">Get it by tomorrow, 10 February</p>
-                <button onclick="addToCart('Men Shirt Orange', 1499)" class="amazon-yellow-btn w-full py-2 text-sm font-semibold mb-2 shadow-sm">Add to Cart</button>
-                <button onclick="directBuy('Men Shirt Orange', 1499)" class="amazon-orange-btn w-full py-2 text-sm font-semibold shadow-sm">Buy Now</button>
-            </div>
+<script>
+let cart=[];
 
-            <div class="bg-white p-4 rounded shadow-sm border product-item" data-title="shoes sneakers white">
-                <div class="h-64 flex items-center justify-center overflow-hidden mb-3">
-                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" class="max-h-full hover:scale-105 transition duration-300">
-                </div>
-                <h3 class="text-sm font-medium leading-5 h-10 overflow-hidden mb-1">Daskart Red Sport Pro - Lightweight Running Shoes</h3>
-                <div class="flex items-center gap-1 text-orange-500 text-xs mb-2">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star text-gray-200"></i>
-                    <span class="text-blue-600 ml-1">1,105 ratings</span>
-                </div>
-                <div class="flex items-baseline gap-1">
-                    <span class="text-xs">₹</span><span class="text-2xl font-bold">2,199</span>
-                    <span class="text-xs text-gray-500 line-through">M.R.P: ₹4,999</span>
-                </div>
-                <p class="text-xs text-green-700 font-bold mb-3 italic">FREE Delivery by Monday</p>
-                <button onclick="addToCart('Red Sport Shoes', 2199)" class="amazon-yellow-btn w-full py-2 text-sm font-semibold mb-2">Add to Cart</button>
-                <button onclick="directBuy('Red Sport Shoes', 2199)" class="amazon-orange-btn w-full py-2 text-sm font-semibold">Buy Now</button>
-            </div>
+const products=[
+ {name:"Headphone",price:799,image:"https://via.placeholder.com/150"},
+ {name:"Smart Watch",price:1999,image:"https://via.placeholder.com/150"},
+ {name:"Shoes",price:1499,image:"https://via.placeholder.com/150"},
+ {name:"Backpack",price:999,image:"https://via.placeholder.com/150"}
+];
 
-        </div>
-    </main>
+function loadProducts(){
+ let html="";
+ products.forEach(p=>{
+  html+=`
+  <div class="card">
+    <img src="${p.image}" width="150"><br>
+    <b>${p.name}</b>
+    <h3>₹${p.price}</h3>
+    <button onclick='add(${JSON.stringify(p)})'>Add</button>
+  </div>`;
+ });
+ document.getElementById("products").innerHTML=html;
+}
 
-    <div class="fixed bottom-0 left-0 right-0 bg-white border-t p-4 flex items-center justify-between shadow-lg z-50">
-        <div>
-            <p class="text-[10px] text-gray-500 font-bold uppercase">Subtotal</p>
-            <p id="subtotal" class="text-xl font-bold text-gray-900">₹0</p>
-        </div>
-        <button onclick="checkoutProcess()" class="amazon-orange-btn px-12 py-3 font-bold text-sm shadow-md">Proceed to Buy</button>
-    </div>
+function add(p){
+ cart.push(p);
+ renderCart();
+}
 
-    <script>
-        let cart = [];
-        let totalAmount = 0;
+function renderCart(){
+ let t=0;
+ let html="";
+ cart.forEach(i=>{
+   html+=`<li>${i.name} ₹${i.price}</li>`;
+   t+=i.price;
+ });
+ document.getElementById("cartItems").innerHTML=html;
+ document.getElementById("total").innerText=t;
+}
 
-        function addToCart(name, price) {
-            cart.push({name, price});
-            totalAmount += price;
-            updateUI();
-            Swal.fire({ title: 'Added!', text: name + ' added to your shopping cart', icon: 'success', showConfirmButton: false, timer: 1000, position: 'top' });
-        }
+loadProducts();
+</script>
 
-        function updateUI() {
-            document.getElementById('cart-count').innerText = cart.length;
-            document.getElementById('subtotal').innerText = '₹' + totalAmount.toLocaleString();
-        }
-
-        function realTimeSearch() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let items = document.getElementsByClassName('product-item');
-            for (let item of items) {
-                let title = item.getAttribute('data-title').toLowerCase();
-                item.style.display = title.includes(input) ? "block" : "none";
-            }
-        }
-
-        async function checkoutProcess() {
-            if(cart.length === 0) return Swal.fire('Your Cart is empty', 'Add some items to proceed', 'info');
-
-            const { value: formValues } = await Swal.fire({
-                title: 'Checkout: Delivery Address',
-                html: `
-                    <input id="sw-name" class="swal2-input" placeholder="Full Name">
-                    <input id="sw-phone" class="swal2-input" placeholder="Mobile Number">
-                    <input id="sw-pin" class="swal2-input" placeholder="Pincode">
-                    <textarea id="sw-addr" class="swal2-input" placeholder="Flat, House no., Building, Company, Apartment"></textarea>
-                    <input id="sw-city" class="swal2-input" placeholder="City">
-                `,
-                confirmButtonText: 'Use this address',
-                confirmButtonColor: '#ffa41c',
-                preConfirm: () => {
-                    return {
-                        name: document.getElementById('sw-name').value,
-                        phone: document.getElementById('sw-phone').value,
-                        pin: document.getElementById('sw-pin').value,
-                        addr: document.getElementById('sw-addr').value,
-                        city: document.getElementById('sw-city').value
-                    }
-                }
-            });
-
-            if (formValues && formValues.name && formValues.phone) {
-                let itemNames = cart.map(i => i.name).join(', ');
-                let waMessage = `*AMAZON ORDER: DASKART*%0A%0A*Name:* ${formValues.name}%0A*Phone:* ${formValues.phone}%0A*Address:* ${formValues.addr}, ${formValues.city} - ${formValues.pin}%0A%0A*Items:* ${itemNames}%0A%0A*Total Amount:* ₹${totalAmount}%0A%0A_Order ID: DS-${Math.floor(Math.random()*90000)+10000}_`;
-                
-                window.open(`https://wa.me/919204619539?text=${waMessage}`, '_blank');
-                
-                cart = []; totalAmount = 0; updateUI();
-                Swal.fire('Order Placed!', 'Your order has been sent successfully.', 'success');
-            }
-        }
-
-        function directBuy(name, price) {
-            cart = [{name, price}];
-            totalAmount = price;
-            updateUI();
-            checkoutProcess();
-        }
-    </script>
 </body>
 </html>
