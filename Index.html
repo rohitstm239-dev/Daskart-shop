@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daskart - Shop Like a Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gray-50 min-h-screen pb-20">
+    <header class="flex items-center justify-between p-4 border-b sticky top-0 bg-white z-50 shadow-sm">
+        <div class="flex items-center gap-4">
+            <h1 class="text-2xl font-bold tracking-tighter text-orange-600">DASKART</h1>
+        </div>
+        <div class="flex items-center gap-5 text-gray-700">
+            <div class="relative cursor-pointer" onclick="showCart()">
+                <i class="fas fa-shopping-cart text-xl"></i>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold">0</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="p-4 grid grid-cols-2 gap-4">
+        <div class="bg-white p-3 rounded-xl shadow-sm border">
+            <div class="aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500" alt="Shirt" class="object-cover h-full w-full">
+            </div>
+            <h4 class="font-medium text-sm">Premium Oversize Tee</h4>
+            <p class="text-gray-900 font-bold mt-1">₹1,299</p>
+            <button onclick="addToCart('Premium Oversize Tee', 1299)" class="w-full mt-2 bg-orange-500 text-white py-2 rounded-lg text-xs font-bold active:scale-95 transition">Add to Cart</button>
+        </div>
+
+        <div class="bg-white p-3 rounded-xl shadow-sm border">
+            <div class="aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1598033129183-c4f50c717658?w=500" alt="Shirt" class="object-cover h-full w-full">
+            </div>
+            <h4 class="font-medium text-sm">Classic White Shirt</h4>
+            <p class="text-gray-900 font-bold mt-1">₹999</p>
+            <button onclick="addToCart('Classic White Shirt', 999)" class="w-full mt-2 bg-orange-500 text-white py-2 rounded-lg text-xs font-bold active:scale-95 transition">Add to Cart</button>
+        </div>
+    </main>
+
+    <div class="fixed bottom-5 left-0 right-0 px-4">
+        <button onclick="placeOrder()" class="w-full bg-black text-white py-4 rounded-2xl font-bold shadow-2xl flex justify-between px-8 items-center">
+            <span>Place Order Now</span>
+            <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <script>
+        let cart = [];
+        let count = 0;
+
+        function addToCart(name, price) {
+            cart.push({name, price});
+            count++;
+            document.getElementById('cart-count').innerText = count;
+            
+            // Chhota sa alert
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            Toast.fire({
+                icon: 'success',
+                title: name + ' added to cart'
+            });
+        }
+
+        async function placeOrder() {
+            if(count === 0) {
+                Swal.fire('Empty Cart', 'Pehle kuch select toh karo bhai!', 'warning');
+                return;
+            }
+
+            const { value: formValues } = await Swal.fire({
+                title: 'Enter Delivery Details',
+                html:
+                    '<input id="swal-input1" class="swal2-input" placeholder="Full Name">' +
+                    '<input id="swal-input2" class="swal2-input" placeholder="Full Address">',
+                focusConfirm: false,
+                preConfirm: () => {
+                    return [
+                        document.getElementById('swal-input1').value,
+                        document.getElementById('swal-input2').value
+                    ]
+                }
+            })
+
+            if (formValues && formValues[0] && formValues[1]) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Order Placed!',
+                    text: 'Thank you ' + formValues[0] + '! Your order for ' + count + ' items is on the way.',
+                    confirmButtonColor: '#f97316'
+                });
+                // Cart reset
+                cart = [];
+                count = 0;
+                document.getElementById('cart-count').innerText = '0';
+            }
+        }
+    </script>
+</body>
+</html>
