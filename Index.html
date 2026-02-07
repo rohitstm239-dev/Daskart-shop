@@ -2,109 +2,170 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Daskart Shop</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Daskart Shop</title>
 
 <style>
 body{
-  font-family: Arial;
   margin:0;
+  font-family: Arial, sans-serif;
   background:#f5f5f5;
 }
 
 header{
-  background:#131921;
-  color:white;
-  padding:15px;
+  background:white;
+  padding:14px;
   font-size:22px;
+  font-weight:bold;
+  color:#b30000;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-#products{
+.menu{font-size:24px}
+
+.grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:20px;
-  padding:20px;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:10px;
 }
 
 .card{
   background:white;
-  padding:15px;
   border-radius:8px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+  overflow:hidden;
+  position:relative;
+}
+
+.card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+
+.badge{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:#777;
+  color:white;
+  padding:5px 8px;
+  font-size:12px;
+}
+
+.wish{
+  position:absolute;
+  bottom:10px;
+  right:10px;
+  background:white;
+  padding:8px;
+  border-radius:50%;
+  box-shadow:0 0 5px rgba(0,0,0,.2);
+}
+
+.card-body{
+  padding:10px;
+}
+
+.price{
+  color:green;
+  font-weight:bold;
+}
+
+.old{
+  text-decoration:line-through;
+  color:#888;
+  margin-left:6px;
+}
+
+.section{
+  background:white;
+  margin-top:15px;
+  padding:20px;
   text-align:center;
 }
 
-button{
-  background:#ff9900;
-  border:none;
-  padding:8px 12px;
-  cursor:pointer;
-  border-radius:4px;
+.review{
+  background:#fafafa;
+  padding:15px;
+  margin:10px;
+  border-radius:8px;
 }
 
-#cart{
+.bottom{
+  position:fixed;
+  bottom:0;
+  width:100%;
   background:white;
-  margin:20px;
-  padding:15px;
-  border-radius:8px;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0;
+  border-top:1px solid #ddd;
+}
+
+.bottom div{
+  text-align:center;
+  font-size:13px;
 }
 </style>
 </head>
 
 <body>
 
-<header>Daskart 🛒</header>
+<header>
+  DASKART
+  <div class="menu">☰</div>
+</header>
 
-<div id="products"></div>
+<div class="grid">
 
-<div id="cart">
-<h3>Cart</h3>
-<ul id="cartItems"></ul>
-<h3>Total: ₹<span id="total">0</span></h3>
+  <div class="card">
+    <span class="badge">Out of Stock</span>
+    <img src="https://picsum.photos/300/400?1">
+    <div class="wish">♡</div>
+    <div class="card-body">
+      Men Orange Cotton Shirt<br>
+      <span class="price">Rs. 499</span>
+      <span class="old">Rs. 999</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://picsum.photos/300/400?2">
+    <div class="wish">♡</div>
+    <div class="card-body">
+      Soft Fabric Black Shirt<br>
+      <span class="price">Rs. 1399</span>
+      <span class="old">Rs. 2299</span>
+    </div>
+  </div>
+
 </div>
 
-<script>
-let cart=[];
+<div class="section">
+  <h2>Happy Customer</h2>
+  Real People, Real Reviews
 
-const products=[
- {name:"Headphone",price:799,image:"https://via.placeholder.com/150"},
- {name:"Smart Watch",price:1999,image:"https://via.placeholder.com/150"},
- {name:"Shoes",price:1499,image:"https://via.placeholder.com/150"},
- {name:"Backpack",price:999,image:"https://via.placeholder.com/150"}
-];
+  <div class="review">
+    ⭐⭐⭐⭐⭐<br>
+    Karan ✓ Verified Buyer
+  </div>
 
-function loadProducts(){
- let html="";
- products.forEach(p=>{
-  html+=`
-  <div class="card">
-    <img src="${p.image}" width="150"><br>
-    <b>${p.name}</b>
-    <h3>₹${p.price}</h3>
-    <button onclick='add(${JSON.stringify(p)})'>Add</button>
-  </div>`;
- });
- document.getElementById("products").innerHTML=html;
-}
+  <div class="review">
+    ⭐⭐⭐⭐☆<br>
+    Varun Mehta
+  </div>
+</div>
 
-function add(p){
- cart.push(p);
- renderCart();
-}
-
-function renderCart(){
- let t=0;
- let html="";
- cart.forEach(i=>{
-   html+=`<li>${i.name} ₹${i.price}</li>`;
-   t+=i.price;
- });
- document.getElementById("cartItems").innerHTML=html;
- document.getElementById("total").innerText=t;
-}
-
-loadProducts();
-</script>
+<div class="bottom">
+  <div>🏠<br>Home</div>
+  <div>🛍️<br>Shop</div>
+  <div>👤<br>Account</div>
+  <div>🛒<br>Cart</div>
+  <div>♡<br>Wishlist</div>
+</div>
 
 </body>
 </html>
