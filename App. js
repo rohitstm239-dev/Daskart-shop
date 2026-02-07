@@ -1,0 +1,68 @@
+import React from 'react';
+import { ShoppingCart, Heart, User, Search, Home, ShoppingBag, Menu } from 'lucide-react';
+
+const App = () => {
+  const products = [
+    { id: 1, name: "Premium Cotton Oversized Shirt", price: "1,899.00", originalPrice: "2,499.00", image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500", outOfStock: true },
+    { id: 2, name: "Classic Linen Summer Shirt", price: "1,599.00", originalPrice: "2,199.00", image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500", outOfStock: false },
+    { id: 3, name: "Structured Denim Shirt", price: "2,299.00", originalPrice: "3,000.00", image: "https://images.unsplash.com/photo-1589310243389-96a5483213a8?w=500", outOfStock: false },
+    { id: 4, name: "Minimalist White Shirt", price: "1,499.00", originalPrice: "1,999.00", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500", outOfStock: true }
+  ];
+
+  return (
+    <div className="min-h-screen bg-white pb-20 font-sans">
+      <header className="flex items-center justify-between p-4 border-b sticky top-0 bg-white z-50">
+        <div className="flex items-center gap-4">
+          <Menu size={24} />
+          <h1 className="text-2xl font-bold text-blue-700">Daskart</h1>
+        </div>
+        <div className="flex items-center gap-4 text-gray-600">
+          <Search size={22} />
+          <div className="relative"><ShoppingCart size={22} /><span className="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center">2</span></div>
+        </div>
+      </header>
+
+      <section className="p-6 bg-gray-50">
+        <h2 className="text-4xl font-extrabold leading-tight text-gray-900 tracking-tight">Elevate Your <br /><span className="text-blue-600">Everyday Style</span></h2>
+        <p className="text-gray-500 mt-4 text-sm leading-relaxed">Discover the latest collection at Daskart. Curated essentials for the modern lifestyle.</p>
+        <div className="flex gap-3 mt-6">
+          <button className="bg-blue-600 text-white px-6 py-3 rounded-md font-medium text-sm">Shop Collection</button>
+          <button className="border border-gray-300 px-6 py-3 rounded-md font-medium text-sm">View Lookbook</button>
+        </div>
+      </section>
+
+      <section className="p-4">
+        <h3 className="text-xl font-bold mb-6">New Arrivals</h3>
+        <div className="grid grid-cols-2 gap-4">
+          {products.map((p) => (
+            <div key={p.id} className="relative">
+              <div className="aspect-[3/4] overflow-hidden bg-gray-100 rounded-lg relative">
+                <img src={p.image} alt={p.name} className="object-cover w-full h-full" />
+                {p.outOfStock && <span className="absolute top-2 left-2 bg-black text-white text-[10px] px-2 py-1 font-bold">OUT OF STOCK</span>}
+                <button className="absolute top-2 right-2 p-1.5 bg-white/80 rounded-full"><Heart size={16} /></button>
+              </div>
+              <div className="mt-3">
+                <h4 className="text-sm font-medium text-gray-800 line-clamp-1">{p.name}</h4>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-sm font-bold text-gray-900">Rs. {p.price}</span>
+                  <span className="text-xs text-gray-400 line-through">Rs. {p.originalPrice}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around py-3 px-2 z-50">
+        <div className="flex flex-col items-center gap-1 text-blue-600"><Home size={20} /><span className="text-[10px] font-medium">Home</span></div>
+        <div className="flex flex-col items-center gap-1 text-gray-400"><ShoppingBag size={20} /><span className="text-[10px] font-medium">Shop</span></div>
+        <div className="flex flex-col items-center gap-1 text-gray-400"><User size={20} /><span className="text-[10px] font-medium">Account</span></div>
+        <div className="flex flex-col items-center gap-1 text-gray-400"><ShoppingCart size={20} /><span className="text-[10px] font-medium">Cart</span></div>
+        <div className="flex flex-col items-center gap-1 text-gray-400"><Heart size={20} /><span className="text-[10px] font-medium">Wishlist</span></div>
+      </nav>
+    </div>
+  );
+};
+
+export default App;
+    
